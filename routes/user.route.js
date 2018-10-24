@@ -38,7 +38,10 @@ router.post('/signup', (req, res) => {
 	}); //end of hash block
 }); //end of route block
 
-router.post('/update_profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/create_profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+	//first create the profile
+	//then find the user associated with it
+	//then update that users profileId with i from profile.create
 	models.profile
 		.create({
 			first_name: req.body.first_name,
@@ -50,11 +53,35 @@ router.post('/update_profile', passport.authenticate('jwt', { session: false }),
 			phone: req.body.phone
 		})
 		.then(profile => {
+			//step one: update user profileId
+			//once profile is successfully created
+			models.user
+				//find user based on id pulled from token
+				.findOne({ where: { _id: req.user._id } })
+				//once found
+				.then(user => {
+					//update profileId with id from profile object created above
+					user
+						.update({
+							profileId: profile._id
+						})
+						//if error updating user's profileId, catch
+						.catch(err => {
+							console.log(err);
+						});
+				})
+				//if error finding user based on id from token
+				.catch(err => {
+					console.log(err);
+				});
+
+			//step two send response with json info
 			res.status(200).json({
 				profile: profile,
 				message: 'profile created successfully'
 			});
 		})
+		//if error creating profile throw it
 		.catch(err => {
 			res.status(500).json({
 				error: err,
@@ -62,10 +89,6 @@ router.post('/update_profile', passport.authenticate('jwt', { session: false }),
 			});
 		});
 });
-
-//we need to create a route for the user to sign in
-//find user, then compare the passwords
-//sign token
 
 router.post('/signin', (req, res) => {
 	models.user.findOne({ where: { email: req.body.email } }).then(user => {

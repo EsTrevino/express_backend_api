@@ -34,7 +34,9 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	Profile.associate = models => {
-		models.profile.hasOne(models.user);
+		models.profile.hasOne(models.user, {
+			onDelete: 'CASCADE'
+		});
 	};
 
 	return Profile;
