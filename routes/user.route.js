@@ -42,7 +42,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 	//first create the profile
 	//then find the user associated with it
 	//then update that users profileId with i from profile.create
-	models.profile
+	models.customer_profile
 		.create({
 			first_name: req.body.first_name,
 			last_name: req.body.last_name,
@@ -52,7 +52,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 			zip: req.body.zip,
 			phone: req.body.phone
 		})
-		.then(profile => {
+		.then(customer_profile => {
 			//step one: update user profileId
 			//once profile is successfully created
 			models.user
@@ -63,7 +63,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 					//update profileId with id from profile object created above
 					user
 						.update({
-							profileId: profile._id
+							customerProfileId: customer_profile._id
 						})
 						//if error updating user's profileId, catch
 						.catch(err => {
@@ -77,7 +77,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 
 			//step two send response with json info
 			res.status(200).json({
-				profile: profile,
+				customer_profile: customer_profile,
 				message: 'profile created successfully'
 			});
 		})

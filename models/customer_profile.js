@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-	const Profile = sequelize.define('profile', {
+	const Customer_Profile = sequelize.define('customer_profile', {
 		_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	});
 
-	Profile.associate = models => {
-		models.profile.hasOne(models.user, {
+	Customer_Profile.associate = models => {
+		models.customer_profile.hasOne(models.user, {
 			onDelete: 'CASCADE'
 		});
 	};
 
-	return Profile;
+	return Customer_Profile;
 };
