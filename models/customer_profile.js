@@ -13,22 +13,10 @@ module.exports = (sequelize, DataTypes) => {
 		last_name: {
 			type: DataTypes.STRING
 		},
-		address1: {
+		position: {
 			type: DataTypes.STRING
 		},
-		address2: {
-			type: DataTypes.STRING
-		},
-		city: {
-			type: DataTypes.STRING
-		},
-		state: {
-			type: DataTypes.STRING
-		},
-		zip: {
-			type: DataTypes.STRING
-		},
-		phone: {
+		short_bio: {
 			type: DataTypes.STRING
 		}
 	});
@@ -41,3 +29,6 @@ module.exports = (sequelize, DataTypes) => {
 
 	return Customer_Profile;
 };
+
+//have a post connect to a customer_profile
+//the profile will be able to show all posts made

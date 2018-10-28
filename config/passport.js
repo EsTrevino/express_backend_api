@@ -17,7 +17,6 @@ module.exports = passport => {
 					if (user) {
 						return done(null, user.dataValues);
 					} else {
-						res.json({ message: 'here' });
 						return done(null, false);
 					}
 				})

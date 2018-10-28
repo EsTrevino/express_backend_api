@@ -38,6 +38,35 @@ router.post('/signup', (req, res) => {
 	}); //end of hash block
 }); //end of route block
 
+router.post('/signin', (req, res) => {
+	models.user.findOne({ where: { email: req.body.email } }).then(user => {
+		bcrypt.compare(req.body.password, user.password, (err, result) => {
+			if (err) {
+				return res.status(401).json({
+					error: err,
+					errorOnCompare: 'Error comparing password'
+				});
+			}
+			if (result) {
+				const payload = {
+					_id: user.dataValues._id,
+					email: user.dataValues.email
+				};
+
+				jwt.sign(payload, CONFIG.jwt_secretkey, (err, token) => {
+					res.json({
+						token: token
+					});
+				});
+			} else {
+				return res.status(401).json({
+					failed: 'Unauthorized access'
+				});
+			}
+		});
+	});
+});
+
 router.post('/create_profile', passport.authenticate('jwt', { session: false }), (req, res) => {
 	//first create the profile
 	//then find the user associated with it
@@ -90,36 +119,12 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 		});
 });
 
-router.post('/signin', (req, res) => {
-	models.user.findOne({ where: { email: req.body.email } }).then(user => {
-		bcrypt.compare(req.body.password, user.password, (err, result) => {
-			if (err) {
-				return res.status(401).json({
-					error: err,
-					errorOnCompare: 'Error comparing password'
-				});
-			}
-			if (result) {
-				const payload = {
-					_id: user.dataValues._id,
-					email: user.dataValues.email
-				};
-
-				jwt.sign(payload, CONFIG.jwt_secretkey, (err, token) => {
-					res.json({
-						token: token
-					});
-				});
-			} else {
-				return res.status(401).json({
-					failed: 'Unauthorized access'
-				});
-			}
-		});
-	});
-});
-
-//need to fix user sign in
-//signs in even with incorrect password
-
+//update profile
+//show order history
+//products table
+//route for sending product information
+//collection/products
+//shopping cart
+//creating an order
+//taking a payment
 module.exports = router;

@@ -1,30 +1,25 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-	const User = sequelize.define('user', {
+	const Post = sequelize.define('post', {
 		_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
-		email: {
+		title: {
 			type: DataTypes.STRING
 		},
-		password: {
+		content: {
 			type: DataTypes.STRING
 		}
-		// googleId: {
-		// 	type: DataTypes.STRING
-		// }
 	});
 
-	User.associate = models => {
-		models.user.hasMany(models.post, {
+	Post.associate = models => {
+		models.post.belongsTo(models.user, {
 			foreignKey: 'user_Id'
 		});
 	};
 
-	return User;
+	return Post;
 };
-
-//user will be the one that will have a key showing all posts
