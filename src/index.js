@@ -25,7 +25,7 @@ require('../config/passport.js')(passport);
 
 app.get('/', (req, res) => res.send('Hello World'));
 app.use('/user', userRoutes);
-app.use('/posts', postRoutes);
+app.use('/post', postRoutes);
 // app.use('/auth', authRoutes);
 
 app.listen(port, () => console.log('server listening on port ' + port));
