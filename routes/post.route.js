@@ -67,6 +67,28 @@ router.delete('/delete_post/:postId', passport.authenticate('jwt', { session: fa
 });
 
 //update a specific post (protected)
+router.put('/update_post/:postId', passport.authenticate('jwt', { session: false }), (req, res) => {
+	models.post.findOne({ where: { _id: req.params.postId } }).then(post => {
+		if (post.user_Id == req.user._id) {
+			models.post
+				.update({ ...req.body }, { where: { _id: req.params.postId } })
+				.then(updatedPost => {
+					res.status(200).json({
+						message: 'post successfully updated'
+					});
+				})
+				.catch(err => {
+					res.json({
+						error: err
+					});
+				});
+		} else {
+			res.status(403).json({
+				message: 'unable to update someone elses post'
+			});
+		}
+	});
+});
 
 //display all comments for a specific post
 
