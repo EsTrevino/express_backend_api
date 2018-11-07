@@ -71,17 +71,11 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 	//first create the profile
 	//then find the user associated with it
 	//then update that users profileId with i from profile.create
-	models.customer_profile
+	models.profile
 		.create({
-			first_name: req.body.first_name,
-			last_name: req.body.last_name,
-			address1: req.body.address1,
-			city: req.body.city,
-			state: req.body.state,
-			zip: req.body.zip,
-			phone: req.body.phone
+			...req.body
 		})
-		.then(customer_profile => {
+		.then(profile => {
 			//step one: update user profileId
 			//once profile is successfully created
 			models.user
@@ -92,7 +86,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 					//update profileId with id from profile object created above
 					user
 						.update({
-							customerProfileId: customer_profile._id
+							profile_Id: profile._id
 						})
 						//if error updating user's profileId, catch
 						.catch(err => {
@@ -106,7 +100,7 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 
 			//step two send response with json info
 			res.status(200).json({
-				customer_profile: customer_profile,
+				profile: profile,
 				message: 'profile created successfully'
 			});
 		})
@@ -119,12 +113,12 @@ router.post('/create_profile', passport.authenticate('jwt', { session: false }),
 		});
 });
 
-//update profile
-//show order history
-//products table
-//route for sending product information
-//collection/products
-//shopping cart
-//creating an order
-//taking a payment
+//see all of your posts
+//see all of someone elses posts
+//see all your comments and the posts they were on
+//update your posts
+//delete your posts
+//comment on someone elses posts
+//like someone elses posts or comment
+//unlike someone elses post or comment
 module.exports = router;

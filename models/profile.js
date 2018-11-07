@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-	const Customer_Profile = sequelize.define('customer_profile', {
+	const Profile = sequelize.define('profile', {
 		_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 		last_name: {
 			type: DataTypes.STRING
 		},
+		handle: {
+			type: DataTypes.STRING
+		},
 		position: {
 			type: DataTypes.STRING
 		},
@@ -21,14 +24,11 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	});
 
-	Customer_Profile.associate = models => {
-		models.customer_profile.hasOne(models.user, {
-			onDelete: 'CASCADE'
+	Profile.associate = models => {
+		models.profile.hasMany(models.comment, {
+			foreignKey: 'profile_id'
 		});
 	};
 
-	return Customer_Profile;
+	return Profile;
 };
-
-//have a post connect to a customer_profile
-//the profile will be able to show all posts made

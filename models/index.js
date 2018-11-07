@@ -48,7 +48,7 @@ Object.keys(db).forEach(function(modelName) {
 	}
 });
 
-sequelize.sync().then(() => {
+sequelize.sync({ force: true }).then(() => {
 	console.log(`Database & tables created!`);
 });
 
@@ -58,4 +58,4 @@ db.Sequelize = Sequelize;
 
 module.exports = db;
 
-//need
+

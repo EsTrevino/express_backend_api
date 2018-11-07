@@ -20,7 +20,11 @@ module.exports = (sequelize, DataTypes) => {
 
 	User.associate = models => {
 		models.user.hasMany(models.post, {
-			foreignKey: 'user_Id'
+			foreignKey: 'user_id'
+		});
+
+		models.user.hasOne(models.profile, {
+			foreignKey: 'user_id'
 		});
 	};
 
